@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+
 struct ContentView: View {
     
     @State private var countries = ["Estonia", "France", "Germany", "Ireland", "Italy", "Nigeria", "Poland", "Spain", "UK", "Ukraine", "US"].shuffled()
@@ -20,7 +21,7 @@ struct ContentView: View {
     @State private var gameOverAlert: Bool = false
     @State private var userSelection: Int = 0
     
-    private var maxQuestions: Int = 4
+    private var maxQuestions: Int = 8
     @State private var numGuesses: Int = 0
     
     var body: some View {
@@ -58,9 +59,7 @@ struct ContentView: View {
                         Button {
                             answerCheck(number)
                         } label: {
-                            Image(countries[number])
-                                .clipShape(.capsule)
-                                .shadow(radius: 5)
+                            FlagImage(countryName: countries[number])
                         }
                     }
                     
@@ -121,6 +120,13 @@ struct ContentView: View {
         score = 0
         numGuesses = 0
         reshuffle()
+    }
+    
+    func FlagImage(countryName: String) -> some View {
+        Image(countryName)
+            .clipShape(.capsule)
+            .shadow(radius: 5)
+            .padding(.vertical, 5)
     }
 }
 
