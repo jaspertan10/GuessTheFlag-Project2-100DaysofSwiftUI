@@ -25,7 +25,8 @@ struct ContentView: View {
     @State private var numGuesses: Int = 0
     
     
-    @State private var animationAmount: [Double] = [0.0, 0.0, 0.0]
+    @State private var rotationAnimationAmount: [Double] = [0.0, 0.0, 0.0]
+    @State private var opacityAnimationAmount : Double = 1.0
     
     var body: some View {
         
@@ -62,12 +63,14 @@ struct ContentView: View {
                         Button {
                             answerCheck(number)
                             withAnimation {
-                                animationAmount[number] += 360
+                                rotationAnimationAmount[number] += 360
+                                opacityAnimationAmount = 0.25
                             }
 
                         } label: {
                             FlagImage(countryName: countries[number])
-                                .rotation3DEffect(.degrees(animationAmount[number]), axis: (x: 0, y: 1, z: 0))
+                                .opacity((showingAlert == true && number != userSelection) ? opacityAnimationAmount : 1)
+                                .rotation3DEffect(.degrees(rotationAnimationAmount[number]), axis: (x: 0, y: 1, z: 0))
                         }
                     }
                     
@@ -120,6 +123,9 @@ struct ContentView: View {
     }
     
     func reshuffle() {
+        opacityAnimationAmount = 1.0
+        rotationAnimationAmount = Array(repeating: 0.0, count: 3)
+        
         countries.shuffle()
         correctAnswer = Int.random(in: 0...2)
     }
@@ -127,6 +133,7 @@ struct ContentView: View {
     func gameOver() {
         score = 0
         numGuesses = 0
+        
         reshuffle()
     }
     
