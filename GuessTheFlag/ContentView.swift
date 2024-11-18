@@ -24,6 +24,9 @@ struct ContentView: View {
     private var maxQuestions: Int = 8
     @State private var numGuesses: Int = 0
     
+    
+    @State private var animationAmount: [Double] = [0.0, 0.0, 0.0]
+    
     var body: some View {
         
         NavigationStack {
@@ -58,8 +61,13 @@ struct ContentView: View {
                     ForEach(0..<3) { number in
                         Button {
                             answerCheck(number)
+                            withAnimation {
+                                animationAmount[number] += 360
+                            }
+
                         } label: {
                             FlagImage(countryName: countries[number])
+                                .rotation3DEffect(.degrees(animationAmount[number]), axis: (x: 0, y: 1, z: 0))
                         }
                     }
                     
